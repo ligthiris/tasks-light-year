@@ -1,4 +1,3 @@
-var tasks = [];
 
 $(function() {
 
@@ -13,13 +12,12 @@ var addTask = function() {
 	newTask.done = false;
 	newTask.name = $("#taskName").val();
 	newTask.date = $("#taskDate").datepicker('getDate');
-	tasks.push(newTask);
 
 	var item = $(".list-group-item:first").clone();
 	item.find("[data-field=task-name]").html(newTask.name);
 	item.find("[data-field=task-date]").html(moment(newTask.date).fromNow());
 	item.find("button").click(checkTask);
-	item.appendTo(".list-group").show();
+	item.appendTo(".list-group").show().data(newTask);
 
 	$(":input").val("");
 	$("input:first").focus();
@@ -27,5 +25,12 @@ var addTask = function() {
 };
 
 var checkTask = function() {
-	$(this).removeClass("btn-default").addClass("btn-success").next("span").addClass("done");
+	var item = $(this).parent(".list-group-item");
+	if (item.data("done") === false) {
+		$(this).removeClass("btn-default").addClass("btn-success").next("span").addClass("done");
+		item.data("done", true);
+	} else {
+		$(this).removeClass("btn-success").addClass("btn-default").next("span").removeClass("done");
+		item.data("done", false);
+	}
 };
