@@ -15,13 +15,14 @@ class TaskController extends BaseController {
 
 	public function saveTask()
 	{
-		$taskName = Input::get('taskName');
-		$taskDate = Input::get('taskDate');
+		$taskName = Input::get('name');
+		$taskDate = Input::get('due_date');
+		$taskDone = false;
 
 		$task = new Task();
 		$task->name = $taskName;
 		$task->due_date = $taskDate;
-		$task->done = false;
+		$task->done = $taskDone;
 		$task->save();
 
 		return Response::json($task);

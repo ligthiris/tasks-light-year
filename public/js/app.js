@@ -1,8 +1,20 @@
 
 $(function() {
 
-	$('.datepicker').datepicker({language: 'es', format: 'dd/mm/yyyy'});
+	$('.datepicker').datepicker({language: 'es', format: 'dd/mm/yyyy', forceParse: true, todayHighlight: true, todayBtn: true});
 	$("form").submit(addTask);
+
+	// get saved tasks
+	$.get('/tasks').done( function(data) {
+		$(data).each(function(i, task){
+			var item = $(".list-group-item:first").clone();
+			item.find("[data-field=task-name]").html(task.name);
+			item.find("[data-field=task-date]").html(moment(task.due_date).fromNow());
+			if(task.done == "1") { item.find("button").removeClass("btn-default").addClass("btn-success").next("span").addClass("done"); }
+			item.find("button").click(checkTask);
+			item.appendTo(".list-group").show().data(task);
+		});
+	});
 
 });
 
@@ -11,16 +23,19 @@ var addTask = function() {
 	var newTask = {};
 	newTask.done = false;
 	newTask.name = $("#taskName").val();
-	newTask.date = $("#taskDate").datepicker('getDate');
+	newTask.due_date = moment($("#taskDate").datepicker("getDate")).format("YYYY-MM-DD");
 
-	var item = $(".list-group-item:first").clone();
-	item.find("[data-field=task-name]").html(newTask.name);
-	item.find("[data-field=task-date]").html(moment(newTask.date).fromNow());
-	item.find("button").click(checkTask);
-	item.appendTo(".list-group").show().data(newTask);
+	$.post('/tasks', newTask).done( function(newTask) {
 
-	$(":input").val("");
-	$("input:first").focus();
+		var item = $(".list-group-item:first").clone();
+		item.find("[data-field=task-name]").html(newTask.name);
+		item.find("[data-field=task-date]").html(moment(newTask.due_date).fromNow());
+		item.find("button").click(checkTask);
+		item.appendTo(".list-group").show().data(newTask);
+
+		$(":input").val("");
+		$("input:first").focus();
+	});
 	return false;
 };
 
