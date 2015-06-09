@@ -15,3 +15,21 @@ Route::get('/', function()
 {
 	return View::make('tasks');
 });
+
+// return all tasks
+Route::get('/tasks', function()
+{
+	return 'All Tasks';
+});
+
+// save task
+Route::post('/tasks', function()
+{
+
+});
+
+// get task
+Route::get('/tasks/{id}', function($id)
+{
+	return 'Task with id ' . $id;
+})->where('id', '[0-9]+');
