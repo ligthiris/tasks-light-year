@@ -4,7 +4,8 @@ class TaskController extends BaseController {
 
 	public function getTasks()
 	{
-		return 'All Tasks';
+		$users = Task::all();
+		return Response::json($users);
 	}
 
 	public function getTask($id)
@@ -14,7 +15,16 @@ class TaskController extends BaseController {
 
 	public function saveTask()
 	{
+		$taskName = Input::get('taskName');
+		$taskDate = Input::get('taskDate');
 
+		$task = new Task();
+		$task->name = $taskName;
+		$task->due_date = $taskDate;
+		$task->done = false;
+		$task->save();
+
+		return Response::json($task);
 	}
 
 }
