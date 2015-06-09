@@ -17,19 +17,10 @@ Route::get('/', function()
 });
 
 // return all tasks
-Route::get('/tasks', function()
-{
-	return 'All Tasks';
-});
+Route::get('/tasks', 'TaskController@getTasks');
 
 // save task
-Route::post('/tasks', function()
-{
-
-});
+Route::post('/tasks', 'TaskController@saveTask');
 
 // get task
-Route::get('/tasks/{id}', function($id)
-{
-	return 'Task with id ' . $id;
-})->where('id', '[0-9]+');
+Route::get('/tasks/{id}', 'TaskController@getTask')->where('id', '[0-9]+');
