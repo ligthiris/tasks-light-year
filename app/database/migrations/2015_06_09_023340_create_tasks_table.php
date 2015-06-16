@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration {
 			$table->increments('id');
 			// columns
 			$table->string('name');
-			$table->string('due_date');
+			$table->date('due_date');
 			$table->boolean('done');
 			// timestamp columns
 			$table->timestamps();

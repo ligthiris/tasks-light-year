@@ -10,7 +10,7 @@ $(function() {
 			var item = $(".list-group-item:first").clone();
 			item.find("[data-field=task-name]").html(task.name);
 			item.find("[data-field=task-date]").html(moment(task.due_date).fromNow());
-			if(task.done == "1") { item.find("button").removeClass("btn-default").addClass("btn-success").next("span").addClass("done"); }
+			if(task.done) { item.find("button").removeClass("btn-default").addClass("btn-success").next("span").addClass("done"); }
 			item.find("button").click(checkTask);
 			item.appendTo(".list-group").show().data(task);
 		});
